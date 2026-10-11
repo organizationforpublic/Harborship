@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborship 港灣式關係</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#2E3760;
+  --dusk:#414C80;
+  --mist:#AEB8DA;
+  --peach:#EBA894;
+  --coral:#D9826F;
+  --blush:#F7D8D0;
+  --cream:#FBF1E9;
+  --ink:#2F3355;
+  --teal:#5E8A8C;
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--serif);
+  color:var(--ink);
+  background:
+    radial-gradient(520px 380px at 0% 0%,rgba(247,216,208,.28),transparent 70%),
+    radial-gradient(520px 380px at 100% 12%,rgba(247,216,208,.2),transparent 70%),
+    linear-gradient(180deg,var(--dusk),var(--night));
+  background-attachment:fixed;
+  min-height:100vh;
+  text-align:left;
+  line-height:1.3;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.09;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px}
+
+/* fixed header */
+header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(46,55,96,.96);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(235,168,148,.35);
+  padding-top:14px;
+}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{
+  font-family:"Cormorant Garamond",var(--serif);
+  font-weight:600;font-size:36px;letter-spacing:.08em;line-height:1;color:var(--cream);
+}
+.sub{font-size:14px;letter-spacing:.32em;color:var(--peach);font-weight:500}
+.warn{margin-top:10px;font-size:12.5px;line-height:1.5;font-weight:700;color:#F3C7B8}
+.warn .wl{display:block;letter-spacing:.3em;font-size:13px}
+.warn .wi{margin:2px 0 0 1.6em;text-indent:-1.3em}
+nav{display:flex;gap:2px;margin:8px -8px 0;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{
+  font:inherit;font-size:14.5px;letter-spacing:.14em;color:var(--mist);
+  background:none;border:0;cursor:pointer;padding:10px 12px 11px;white-space:nowrap;position:relative;
+  transition:color .2s;
+}
+nav button::after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;background:var(--peach);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+nav button:hover{color:var(--blush)}
+nav button[aria-selected="true"]{color:var(--cream);font-weight:700}
+nav button[aria-selected="true"]::after{transform:scaleX(1)}
+button:focus-visible{outline:2px solid var(--peach);outline-offset:2px}
+
+/* panels */
+main{padding:24px 0 40px}
+.panel{
+  display:none;background:var(--cream);border-radius:20px;overflow:hidden;
+  box-shadow:0 20px 50px rgba(20,25,55,.35);
+}
+.panel.on{display:block;animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.art{display:block;width:100%;height:auto;background:var(--blush)}
+.body{padding:26px 24px 24px}
+h2{
+  font-weight:700;font-size:22px;letter-spacing:.16em;line-height:1.3;color:var(--night);margin-bottom:20px;
+  padding-bottom:12px;position:relative;
+}
+h2::after{content:"";position:absolute;left:0;bottom:0;width:36px;height:2px;background:var(--coral)}
+.txt{white-space:pre-line;font-size:16px;line-height:1.3;font-weight:400}
+.txt .em{color:var(--coral);font-weight:500}
+ol{list-style:none;counter-reset:d}
+ol li{
+  counter-increment:d;position:relative;padding-left:2em;margin-bottom:.9em;
+  font-size:16px;line-height:1.3;
+}
+ol li::before{content:counter(d)".";position:absolute;left:0;color:var(--coral);font-weight:700}
+ol li:last-child{margin-bottom:0}
+.pager{display:flex;gap:10px;margin-top:28px;padding-top:18px;border-top:1px solid rgba(46,55,96,.15)}
+.pager button{
+  font:inherit;font-size:14px;letter-spacing:.1em;cursor:pointer;color:var(--night);
+  background:var(--blush);border:0;padding:9px 16px;border-radius:999px;transition:background .2s;
+}
+.pager button:hover{background:var(--peach)}
+footer{padding:0 0 36px;font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:.1em;color:var(--mist);font-size:15px}
+
+@media (max-width:480px){
+  .wrap{padding:0 14px}
+  h1{font-size:32px}
+  .warn{font-size:12px}
+  .body{padding:22px 18px 20px}
+}
+@media (prefers-reduced-motion:reduce){.panel.on{animation:none}nav button::after{transition:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><h1>Harborship</h1><span class="sub">港灣式關係</span></div>
+    <div class="warn" role="note">
+      <span class="wl">警語：</span>
+      <p class="wi">1. 這不是炮友、不是備胎、不是可以拿來隨便對待的關係</p>
+      <p class="wi">2. 禁止未成年、抽菸、約炮的人</p>
+    </div>
+    <nav role="tablist" aria-label="章節">
+      <button role="tab" id="t-name" aria-controls="p-name" aria-selected="true">命名原因</button>
+      <button role="tab" id="t-def" aria-controls="p-def" aria-selected="false">定義</button>
+      <button role="tab" id="t-story" aria-controls="p-story" aria-selected="false">心路歷程</button>
+      <button role="tab" id="t-after" aria-controls="p-after" aria-selected="false">看完之後</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="panel on" id="p-name" role="tabpanel" aria-labelledby="t-name">
+  <svg class="art" viewBox="0 0 320 150" role="img" aria-label="窗外的港灣與帆船">
+    <rect width="320" height="150" fill="#F7D8D0"/>
+    <circle cx="238" cy="84" r="30" fill="#EBA894"/>
+    <rect y="96" width="320" height="54" fill="#6B78AA"/>
+    <path d="M0 108h320M0 122h320M0 136h320" stroke="#8F9BC8" stroke-width="2" stroke-dasharray="14 10"/>
+    <path d="M52 100h26l-3 -46h-20z" fill="#FBF1E9" stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M56 78h18M55 66h20" stroke="#D9826F" stroke-width="5"/>
+    <path d="M54 54h22l-11-12z" fill="#D9826F" stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M150 112h60l-9 14h-42z" fill="#414C80" stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M180 108V54l-26 50z" fill="#FBF1E9" stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M184 108V68l20 40z" fill="#EBA894" stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M180 54v-8" stroke="#2F3355" stroke-width="2.5"/>
+  </svg>
+  <div class="body">
+    <h2>命名原因</h2>
+    <div class="txt">兩個人就像是彼此的避風港
+能接住對方，無論風平浪靜或是驚濤駭浪
+但我們依然能自由出航，探索、冒險，不被名分拘束
+不過，如果想要定錨，升級成情侶，彼此也能夠接受</div>
+    <div class="pager"><button data-go="1">定義 ›</button></div>
+  </div>
+</section>
+
+<section class="panel" id="p-def" role="tabpanel" aria-labelledby="t-def">
+  <svg class="art" viewBox="0 0 320 150" role="img" aria-label="書架與盆栽">
+    <rect width="320" height="150" fill="#6B78AA"/>
+    <rect x="0" y="116" width="320" height="34" fill="#4A5588"/>
+    <path d="M0 126h320M0 140h320" stroke="#5B679C" stroke-width="2"/>
+    <rect x="150" y="36" width="150" height="5" fill="#2F3355"/>
+    <g stroke="#2F3355" stroke-width="2.2" stroke-linejoin="round">
+      <rect x="160" y="8" width="12" height="28" fill="#5E8A8C"/>
+      <rect x="173" y="12" width="10" height="24" fill="#EBA894"/>
+      <rect x="184" y="6" width="13" height="30" fill="#FBF1E9"/>
+      <rect x="198" y="14" width="10" height="22" fill="#414C80"/>
+      <rect x="209" y="9" width="12" height="27" fill="#D9826F"/>
+      <circle cx="258" cy="24" r="12" fill="#AEB8DA"/>
+    </g>
+    <path d="M200 70h96v38h-96z" fill="#F7D8D0" stroke="#2F3355" stroke-width="2.2"/>
+    <path d="M210 82h40M210 92h60M268 78h18" stroke="#6B78AA" stroke-width="2.5"/>
+    <g stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M62 96h58l-8 40H70z" fill="#EBA894"/>
+      <path d="M91 96C84 70 66 62 46 66c2 22 18 32 45 30z" fill="#5E8A8C"/>
+      <path d="M91 96C98 66 118 54 138 58c-2 26-18 38-47 38z" fill="#4C7A80"/>
+      <path d="M91 96C86 72 88 48 100 30c14 16 14 44-9 66z" fill="#6E9C9B"/>
+    </g>
+    <path d="M91 96V46" stroke="#2F3355" stroke-width="2"/>
+  </svg>
+  <div class="body">
+    <h2>定義</h2>
+    <ol>
+      <li>摯友以上，戀人未滿</li>
+      <li>關係的基礎是真心的友誼與信任</li>
+      <li>以當朋友為絕對優先，而非以男女朋友為最初目的</li>
+      <li>情感優先，彼此是對方生活中很重要的人，遇到事情會想到對方</li>
+      <li>高度身體親密：擁抱、依偎是日常。性行為可以發生，但禁止成為關係的主要目的</li>
+      <li>無名分：是朋友而不是男女朋友，不以戀人的標準互相要求</li>
+      <li>可變性：如果真的成為男女朋友也可以接受</li>
+      <li>隨時可退出：任何一方都可以調整距離或結束，但要說一聲，不可以突然消失</li>
+      <li>非排他：雙方不可以強迫對方報備或嚴格忠誠於自己 (例如: 要求對方不可以和異性聊天)</li>
+    </ol>
+    <div class="pager"><button data-go="-1">‹ 命名原因</button><button data-go="1">心路歷程 ›</button></div>
+  </div>
+</section>
+
+<section class="panel" id="p-story" role="tabpanel" aria-labelledby="t-story">
+  <svg class="art" viewBox="0 0 320 150" role="img" aria-label="貓、檯燈與紙飛機">
+    <rect width="320" height="150" fill="#F7D8D0"/>
+    <rect x="0" y="108" width="320" height="42" fill="#7C86B4"/>
+    <path d="M0 122h320" stroke="#929CC6" stroke-width="2"/>
+    <g stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M250 112h30M265 112V78" fill="none"/>
+      <path d="M244 56h42l-8 22h-26z" fill="#FBF1E9"/>
+      <path d="M96 118c-30 0-34-34-16-46 18-10 36-2 40 14 3 16-6 32-24 32z" fill="#FBF1E9"/>
+      <path d="M118 112c28 2 44-8 40-26" fill="none"/>
+      <circle cx="94" cy="62" r="19" fill="#FBF1E9"/>
+      <path d="M78 50l-2-18 14 10zM110 50l2-18-14 10z" fill="#EBA894"/>
+      <path d="M84 70c4 5 14 5 20 0" fill="none" stroke-width="2"/>
+      <path d="M170 70l60-26-20 44-14-12z" fill="#FBF1E9"/>
+      <path d="M196 76l14-32" fill="none" stroke-width="2"/>
+    </g>
+    <circle cx="86" cy="62" r="2.4" fill="#2F3355"/><circle cx="102" cy="62" r="2.4" fill="#2F3355"/>
+    <path d="M96 118c-8-12-10-26-4-34" fill="none" stroke="#D9826F" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  </svg>
+  <div class="body">
+    <h2>心路歷程</h2>
+    <div class="txt">單身的這三年多
+我發現自己似乎不適合一般大家認知中的戀愛關係
+我更需要自由
+
+我要的自由
+是想跳脫戀愛的既定思維
+特別強調，這不是說要到處拈花惹草
+不會到處亂搞
+因為我是極致專一的人
+
+過去的感情裡，我沒有發生過任何一次關係
+我也只談過一次
+柏拉圖式戀愛對我來說也是可以接受的
+
+以前我不是喜歡社交的人
+甚至可以說很不喜歡社交
+
+不過當看著大家成群結對的樣子
+還是會覺得有點孤單
+
+而最近我更不知為何的
+迫切的想要社交
+一起出去玩也好
+一起吃飯也好
+一起讀書也好
+一起運動也好
+一起逛街也好
+一起.....都好
+
+大家通常對我的印象就是：
+冷酷、紀律、堅強、有方向感
+我確實常常把事情看的太嚴肅
+不過其實那只是因為我希望自己可以給人一種穩定強大的感覺
+用來隱藏自己對未來過去的迷茫
+以及焦慮、不安的情緒
+
+有時候會想找個人抱著 (很需要催產素) 
+雖然有好友
+不過跟好友擁抱感覺又怪怪的
+
+找個女友，似乎能解決問題
+但我覺得目前我還沒辦法真的承擔起一份真正的關係
+我自己知道我還不夠強大
+
+另外，如果有男女朋友的名分
+我反而會對待的太過於認真
+導致很多情緒做法都是為了配合名分而做出來的
+會過於認真，像是在執行任務因此
+
+希望可以找到跟我有大致相同想法的女生
+能跟我從朋友開始做起
+
+幸運的話剛好同頻
+可以成為摯友
+
+再更好運 也許更進一步
+
+我知道這不是主流的做法
+或許會有人說我只是想逃避
+也或許他們會說只是在作戲
+
+但我知道這是我最能負荷的關係
+不想高估自己
+但也不想要再孤單地過一年四季</div>
+    <div class="pager"><button data-go="-1">‹ 定義</button><button data-go="1">看完之後 ›</button></div>
+  </div>
+</section>
+
+<section class="panel" id="p-after" role="tabpanel" aria-labelledby="t-after">
+  <svg class="art" viewBox="0 0 320 150" role="img" aria-label="兩杯飲料與一段散步的路">
+    <rect width="320" height="150" fill="#6B78AA"/>
+    <circle cx="262" cy="40" r="22" fill="#F7D8D0"/>
+    <rect y="112" width="320" height="38" fill="#4A5588"/>
+    <path d="M0 131c60-18 120 14 180-4s100-8 140-2" fill="none" stroke="#EBA894" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+    <g stroke="#2F3355" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M92 70h50l-6 40h-38z" fill="#FBF1E9"/>
+      <path d="M142 80c16-2 16 20-4 20" fill="none"/>
+      <path d="M170 76h46l-5 34h-36z" fill="#EBA894"/>
+      <path d="M216 84c14-2 14 18-3 18" fill="none"/>
+      <path d="M108 54c-6-8 6-12 0-20M126 54c-6-8 6-12 0-20M188 58c-6-8 6-12 0-20M204 58c-6-8 6-12 0-20" fill="none" stroke="#F7D8D0" stroke-width="2.5"/>
+    </g>
+  </svg>
+  <div class="body">
+    <h2>看完之後</h2>
+    <div class="txt">讀到這裡
+如果妳覺得有點興趣
+歡迎來跟我聊聊
+可以先說說妳現在喜歡什麼、最近在看什麼
+或是妳對這種關係有什麼疑問
+我都很樂意回答
+
+如果聊過之後覺得不適合，也完全沒關係
+說一聲就好，我們都不用有壓力
+
+要是剛好合拍，
+就從一杯飲料、一段散步開始
+從朋友開始</div>
+    <div class="pager"><button data-go="-1">‹ 心路歷程</button></div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var ids=["name","def","story","after"];
+  var tabs=ids.map(function(i){return document.getElementById("t-"+i)});
+  var panels=ids.map(function(i){return document.getElementById("p-"+i)});
+  var cur=0;
+  function show(n,push){
+    cur=n;
+    tabs.forEach(function(t,i){
+      t.setAttribute("aria-selected",i===n);
+      t.tabIndex=i===n?0:-1;
+      panels[i].classList.toggle("on",i===n);
+    });
+    if(push){try{history.replaceState(null,"","#"+ids[n])}catch(e){}}
+    window.scrollTo({top:0});
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener("click",function(){show(i,true)});
+    t.addEventListener("keydown",function(e){
+      var d=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;
+      if(!d)return;
+      var n=(cur+d+ids.length)%ids.length;
+      show(n,true);tabs[n].focus();
+    });
+  });
+  document.querySelectorAll("[data-go]").forEach(function(b){
+    b.addEventListener("click",function(){
+      show(Math.max(0,Math.min(ids.length-1,cur+parseInt(b.dataset.go,10))),true);
+    });
+  });
+  var s=ids.indexOf(location.hash.slice(1));
+  show(s<0?0:s,false);
+})();
+</script>
+</body>
+</html>
